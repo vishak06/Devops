@@ -59,6 +59,11 @@ resource "aws_ecs_task_definition" "backend" {
       protocol      = "tcp"
     }]
 
+    command = [
+      "sh", "-c",
+      "python manage.py migrate --noinput && gunicorn finance_tracker.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+    ]
+
     environment = [
       { name = "DJANGO_SECRET_KEY",    value = var.django_secret_key },
       { name = "DJANGO_DEBUG",         value = "False" },
