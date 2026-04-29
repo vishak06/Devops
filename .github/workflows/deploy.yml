@@ -6,8 +6,9 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  ECR_BACKEND_REPO: finance-tracker-backend
-  ECR_FRONTEND_REPO: finance-tracker-frontend
+  ECR_REGISTRY: 195714075381.dkr.ecr.ap-south-1.amazonaws.com
+  ECR_BACKEND_REPO: finance-backend
+  ECR_FRONTEND_REPO: finance-frontend
   ECS_CLUSTER: finance-tracker-cluster
   ECS_BACKEND_SERVICE: finance-tracker-backend
   ECS_FRONTEND_SERVICE: finance-tracker-frontend
@@ -28,13 +29,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Login to Amazon ECR
-        id: ecr-login
-        uses: aws-actions/amazon-ecr-login@v2
+      - name: Login to Amazon ECR (ap-south-1)
+        run: aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
 
       - name: Build & push backend image
         env:
-          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_BACKEND_REPO:$IMAGE_TAG \
@@ -45,7 +44,6 @@ jobs:
 
       - name: Build & push frontend image
         env:
-          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_FRONTEND_REPO:$IMAGE_TAG \
