@@ -1,28 +1,24 @@
-# ============================================================
-# Daily Expense Tracker — Terraform Outputs
-# ============================================================
-
-output "ec2_public_ip" {
-  description = "Public IP address of the EC2 instance"
-  value       = aws_instance.expense_tracker_ec2.public_ip
-}
-
-output "ec2_public_dns" {
-  description = "Public DNS of the EC2 instance"
-  value       = aws_instance.expense_tracker_ec2.public_dns
+output "alb_dns_name" {
+  description = "DNS name of the Application Load Balancer"
+  value       = aws_lb.main.dns_name
 }
 
 output "rds_endpoint" {
   description = "RDS PostgreSQL endpoint"
-  value       = aws_db_instance.expense_tracker_db.endpoint
+  value       = aws_db_instance.main.endpoint
 }
 
-output "rds_database_name" {
-  description = "Name of the RDS database"
-  value       = aws_db_instance.expense_tracker_db.db_name
+output "rds_address" {
+  description = "RDS hostname (without port)"
+  value       = aws_db_instance.main.address
 }
 
-output "app_url" {
-  description = "URL to access the application"
-  value       = "http://${aws_instance.expense_tracker_ec2.public_ip}:8000"
+output "ecs_cluster_name" {
+  description = "ECS cluster name"
+  value       = aws_ecs_cluster.main.name
+}
+
+output "vpc_id" {
+  description = "VPC ID"
+  value       = aws_vpc.main.id
 }

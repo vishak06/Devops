@@ -1,28 +1,44 @@
-# ============================================================
-# Daily Expense Tracker — Terraform Variables
-# ============================================================
-
 variable "aws_region" {
-  description = "AWS region to deploy resources"
+  description = "AWS region for all resources"
   type        = string
   default     = "us-east-1"
 }
 
-variable "instance_type" {
-  description = "EC2 instance type"
+variable "environment" {
+  description = "Environment name (dev, staging, prod)"
   type        = string
-  default     = "t2.micro"
+  default     = "prod"
 }
 
-variable "ami_id" {
-  description = "AMI ID for EC2 instance (Amazon Linux 2 in us-east-1)"
+variable "project_name" {
+  description = "Project name used for resource naming"
   type        = string
-  default     = "ami-0c02fb55956c7d316"
+  default     = "finance-tracker"
 }
 
-variable "key_name" {
-  description = "Name of the AWS key pair for SSH access"
+variable "vpc_cidr" {
+  description = "CIDR block for VPC"
   type        = string
+  default     = "10.0.0.0/16"
+}
+
+variable "db_username" {
+  description = "RDS master username"
+  type        = string
+  default     = "postgres"
+  sensitive   = true
+}
+
+variable "db_password" {
+  description = "RDS master password"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_name" {
+  description = "RDS database name"
+  type        = string
+  default     = "finance_tracker"
 }
 
 variable "db_instance_class" {
@@ -31,20 +47,42 @@ variable "db_instance_class" {
   default     = "db.t3.micro"
 }
 
-variable "db_name" {
-  description = "Name of the PostgreSQL database"
+variable "backend_image" {
+  description = "ECR image URI for backend"
   type        = string
-  default     = "expense_tracker_db"
 }
 
-variable "db_username" {
-  description = "Master username for the RDS instance"
+variable "frontend_image" {
+  description = "ECR image URI for frontend"
   type        = string
-  default     = "admin"
 }
 
-variable "db_password" {
-  description = "Master password for the RDS instance"
+variable "backend_cpu" {
+  description = "Fargate CPU units for backend"
+  type        = number
+  default     = 256
+}
+
+variable "backend_memory" {
+  description = "Fargate memory (MB) for backend"
+  type        = number
+  default     = 512
+}
+
+variable "frontend_cpu" {
+  description = "Fargate CPU units for frontend"
+  type        = number
+  default     = 256
+}
+
+variable "frontend_memory" {
+  description = "Fargate memory (MB) for frontend"
+  type        = number
+  default     = 512
+}
+
+variable "django_secret_key" {
+  description = "Django SECRET_KEY for production"
   type        = string
   sensitive   = true
 }

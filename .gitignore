@@ -1,41 +1,21 @@
+# Node
+node_modules/
+dist/
+.env
+
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
-*.egg-info/
-dist/
-build/
-*.egg
-
-# Virtual environment
-venv/
-env/
-.venv/
-
-# Django
-db.sqlite3
-*.log
-media/
-staticfiles/
+*.sqlite3
 
 # Terraform
 .terraform/
 *.tfstate
 *.tfstate.*
+crash.log
 *.tfvars
-!terraform.tfvars.example
-.terraform.lock.hcl
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
+ignore/
 
 # OS
 .DS_Store
-Thumbs.db
-
-# Environment variables
-.env

@@ -1,231 +1,215 @@
-# Daily Expense Tracker 💰
+# 💰 FinanceFlow — Personal Finance Tracker
 
-A full-stack web application to track daily income and expenses, built with **Django** (backend), **HTML/CSS/JavaScript** (frontend), and deployable on **AWS** using **Terraform**.
+A full-stack, production-ready personal finance tracker with a premium SaaS-quality UI, built with **React + Vite** (frontend) and **Django REST Framework** (backend).
+
+![React](https://img.shields.io/badge/React-19-blue?logo=react)
+![Django](https://img.shields.io/badge/Django-5.2-green?logo=django)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue?logo=postgresql)
+![Docker](https://img.shields.io/badge/Docker-Compose-blue?logo=docker)
+![Terraform](https://img.shields.io/badge/Terraform-AWS-purple?logo=terraform)
 
 ---
 
-## 📁 Project Structure
+## ✨ Features
+
+- **Dashboard** — Balance overview, monthly charts, category breakdown, budget alerts
+- **Transactions** — Full CRUD with search, filters, pagination, CSV export
+- **Analytics** — Monthly trends, category pie chart, spending insights
+- **Authentication** — JWT-based login/signup with token refresh
+- **Dark Mode** — Toggle with system preference detection
+- **Budget Tracking** — Per-category monthly limits with overspend alerts
+- **Responsive** — Mobile-first design with collapsible sidebar
+- **Export** — Download all data as CSV
+
+---
+
+## 🏗️ Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19, Vite, Tailwind CSS v4, Recharts, Axios, Lucide Icons |
+| Backend | Django 5.2, Django REST Framework, SimpleJWT, django-filter |
+| Database | PostgreSQL 16 (SQLite fallback for local dev) |
+| Containerization | Docker, Docker Compose |
+| Infrastructure | Terraform (AWS ECS Fargate, ALB, RDS, VPC) |
+| CI/CD | GitHub Actions |
+
+---
+
+## 📂 Project Structure
 
 ```
 DevopsProject/
-├── backend/                     # Django backend
-│   ├── expense_tracker/         # Django project settings
-│   │   ├── settings.py          # Database & app configuration
-│   │   ├── urls.py              # Root URL routing
-│   │   └── wsgi.py              # WSGI entry point
-│   ├── tracker/                 # Django app
-│   │   ├── models.py            # Transaction model
-│   │   ├── views.py             # API views
-│   │   └── urls.py              # API URL patterns
-│   ├── manage.py
-│   └── requirements.txt
-├── frontend/                    # Frontend UI
-│   ├── index.html               # Main page
-│   ├── style.css                # Styling (dark theme)
-│   └── app.js                   # Fetch API logic
-├── terraform/                   # AWS Infrastructure as Code
-│   ├── main.tf                  # EC2, RDS, Security Groups
-│   ├── variables.tf             # Input variables
-│   ├── outputs.tf               # Output values
-│   └── terraform.tfvars.example # Example variable values
-├── deploy/
-│   └── setup.sh                 # EC2 bootstrap script
-├── .gitignore
-└── README.md
+├── finance_tracker/          # Django backend
+│   ├── accounts/             # Auth app (register, login, JWT)
+│   ├── expenses/             # Core app (expenses, budgets, analytics)
+│   ├── finance_tracker/      # Django project settings
+│   ├── requirements.txt
+│   ├── Dockerfile
+│   └── manage.py
+├── frontend/                 # React + Vite frontend
+│   ├── src/
+│   │   ├── components/       # Reusable UI components
+│   │   ├── pages/            # Dashboard, Transactions, Analytics, Auth
+│   │   ├── context/          # AuthContext, ThemeContext
+│   │   └── services/         # API layer (Axios)
+│   ├── Dockerfile
+│   └── nginx.conf
+├── terraform/                # AWS infrastructure
+├── .github/workflows/        # CI/CD pipeline
+├── docker-compose.yml
+└── .env.example
 ```
 
 ---
 
-## 🚀 Features
-
-- Add **income** and **expense** transactions
-- Each transaction has: amount, type, category, date, description
-- View **total balance** (income - expense) in real-time
-- **Filter** transactions by category
-- **Transaction history** table with sorting
-- Modern **dark theme** with glassmorphism UI
-- **REST API** backend
-- **Terraform** scripts for AWS deployment
-
----
-
-## 🔧 API Endpoints
-
-| Method | Endpoint               | Description                              |
-| ------ | ---------------------- | ---------------------------------------- |
-| POST   | `/api/add-transaction/`| Add a new transaction                    |
-| GET    | `/api/transactions/`   | List all transactions (?category=filter) |
-| GET    | `/api/balance/`        | Get total income, expense, and balance   |
-
----
-
-## 🖥️ Run Locally (Step-by-Step)
+## 🚀 Quick Start (Local Development)
 
 ### Prerequisites
-- Python 3.8+
-- pip
-- Git
+- Python 3.10+
+- Node.js 18+
+- (Optional) PostgreSQL 16 or Docker
 
-### Steps
+### 1. Backend Setup
 
-**1. Clone the repository**
 ```bash
-git clone <your-repo-url>
-cd DevopsProject
-```
+cd finance_tracker
 
-**2. Create a virtual environment**
-```bash
-cd backend
+# Create virtual environment
 python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-# Windows
-venv\Scripts\activate
-
-# macOS/Linux
-source venv/bin/activate
-```
-
-**3. Install dependencies**
-```bash
+# Install dependencies
 pip install -r requirements.txt
-```
 
-**4. Run database migrations**
-```bash
+# Run migrations (uses SQLite by default)
 python manage.py migrate
-```
 
-**5. Start the development server**
-```bash
+# Create superuser (optional)
+python manage.py createsuperuser
+
+# Start server
 python manage.py runserver
 ```
 
-**6. Open in browser**
-```
-http://localhost:8000
+Backend runs at `http://127.0.0.1:8000`
+
+### 2. Frontend Setup
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
 ```
 
-> The app uses **SQLite** by default for local development — no database setup needed!
+Frontend runs at `http://localhost:5173` (auto-proxies `/api` to backend)
 
 ---
 
-## ☁️ Deploy on AWS (Step-by-Step)
+## 🐳 Docker Setup
 
-### Prerequisites
-- AWS account with access keys configured
-- Terraform installed
-- An AWS key pair created in your region
+```bash
+# Build and start all services
+docker-compose up --build
 
-### Steps
+# Access the app
+# Frontend: http://localhost
+# Backend API: http://localhost:8000
+# PostgreSQL: localhost:5432
+```
 
-**1. Configure Terraform variables**
+---
+
+## 📡 API Endpoints
+
+### Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register/` | Register new user |
+| POST | `/api/auth/login/` | Login (returns JWT) |
+| POST | `/api/auth/token/refresh/` | Refresh access token |
+| GET | `/api/auth/profile/` | Get user profile |
+
+### Expenses
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/expenses/` | List expenses (paginated, filterable) |
+| POST | `/api/expenses/` | Create expense |
+| PUT | `/api/expenses/:id/` | Update expense |
+| DELETE | `/api/expenses/:id/` | Delete expense |
+
+### Budgets
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/budgets/` | List budgets |
+| POST | `/api/budgets/` | Create budget |
+| PUT | `/api/budgets/:id/` | Update budget |
+| DELETE | `/api/budgets/:id/` | Delete budget |
+
+### Analytics & Dashboard
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/dashboard/` | Dashboard summary |
+| GET | `/api/analytics/monthly/` | Monthly aggregates |
+| GET | `/api/analytics/category/` | Category breakdown |
+| GET | `/api/export/csv/` | Export as CSV |
+
+---
+
+## ☁️ AWS Deployment
+
+### 1. Push Images to ECR
+
+```bash
+# Create ECR repositories
+aws ecr create-repository --repository-name finance-tracker-backend
+aws ecr create-repository --repository-name finance-tracker-frontend
+
+# Login, build, tag, push (see CI/CD workflow for automation)
+```
+
+### 2. Deploy Infrastructure with Terraform
+
 ```bash
 cd terraform
-cp terraform.tfvars.example terraform.tfvars
-```
 
-Edit `terraform.tfvars` with your values:
-```hcl
-aws_region    = "us-east-1"
-key_name      = "your-key-pair-name"
-db_password   = "YourStrongPassword123!"
-```
-
-**2. Initialize Terraform**
-```bash
 terraform init
-```
-
-**3. Preview the infrastructure**
-```bash
-terraform plan
-```
-
-**4. Deploy**
-```bash
+terraform plan -var="db_password=YOUR_PASSWORD" -var="django_secret_key=YOUR_KEY" \
+  -var="backend_image=YOUR_ECR_URI/finance-tracker-backend:latest" \
+  -var="frontend_image=YOUR_ECR_URI/finance-tracker-frontend:latest"
 terraform apply
 ```
 
-Type `yes` when prompted. Terraform will create:
-- EC2 instance (t2.micro)
-- RDS PostgreSQL instance (db.t3.micro)
-- Security groups with proper access rules
+### 3. CI/CD (GitHub Actions)
 
-**5. Access the application**
+Set these repository secrets:
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
 
-After deployment, Terraform outputs the app URL:
-```
-app_url = "http://<EC2-PUBLIC-IP>:8000"
-```
-
-**6. SSH into EC2 (if needed)**
-```bash
-ssh -i your-key.pem ec2-user@<EC2-PUBLIC-IP>
-```
-
-**7. Tear down (destroy resources)**
-```bash
-terraform destroy
-```
+Push to `main` triggers automatic build → push → deploy.
 
 ---
 
-## 🌿 Git Branching Strategy
+## 🔐 Environment Variables
 
-| Branch     | Purpose                          |
-| ---------- | -------------------------------- |
-| `main`     | Complete, production-ready code  |
-| `backend`  | Django backend development       |
-| `frontend` | Frontend UI development          |
+See `.env.example` for all available variables.
 
-### Workflow
-```bash
-# Backend development
-git checkout -b backend
-# ... make backend changes ...
-git add . && git commit -m "feat: add Django backend with REST API"
-git checkout main && git merge backend
-
-# Frontend development
-git checkout -b frontend
-# ... make frontend changes ...
-git add . && git commit -m "feat: add frontend with dark theme UI"
-git checkout main && git merge frontend
-```
-
----
-
-## 🗂️ Transaction Categories
-
-| Category      | Emoji |
-| ------------- | ----- |
-| Food          | 🍔    |
-| Travel        | ✈️    |
-| Bills         | 🧾    |
-| Salary        | 💼    |
-| Entertainment | 🎮    |
-| Shopping      | 🛒    |
-| Health        | 🏥    |
-| Other         | 📦    |
-
----
-
-## 📝 Environment Variables (Production)
-
-| Variable              | Description                    | Default             |
-| --------------------- | ------------------------------ | ------------------- |
-| `DB_HOST`             | PostgreSQL host                | (SQLite if not set) |
-| `DB_NAME`             | Database name                  | expense_tracker_db  |
-| `DB_USER`             | Database username              | admin               |
-| `DB_PASSWORD`         | Database password              | —                   |
-| `DB_PORT`             | Database port                  | 5432                |
-| `DJANGO_DEBUG`        | Debug mode                     | True                |
-| `DJANGO_SECRET_KEY`   | Django secret key              | (dev key)           |
-| `DJANGO_ALLOWED_HOSTS`| Comma-separated allowed hosts  | *                   |
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `DJANGO_SECRET_KEY` | Django secret key | (insecure default) |
+| `DJANGO_DEBUG` | Debug mode | `True` |
+| `DB_NAME` | PostgreSQL database name | (empty = SQLite) |
+| `DB_USER` | PostgreSQL user | `postgres` |
+| `DB_PASSWORD` | PostgreSQL password | `postgres` |
+| `DB_HOST` | PostgreSQL host | `localhost` |
+| `CORS_ALLOWED_ORIGINS` | Allowed CORS origins | `http://localhost:5173` |
 
 ---
 
 ## 📄 License
 
-This project is for educational purposes. Feel free to use and modify.
+MIT
