@@ -22,3 +22,13 @@ output "vpc_id" {
   description = "VPC ID"
   value       = aws_vpc.main.id
 }
+
+output "ecr_backend_url" {
+  description = "ECR Repository URL for Backend"
+  value       = aws_ecr_repository.backend.repository_url
+}
+
+output "ecr_frontend_url" {
+  description = "ECR Repository URL for Frontend"
+  value       = aws_ecr_repository.frontend.repository_url
+}

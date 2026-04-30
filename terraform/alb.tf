@@ -1,4 +1,3 @@
-# ---------- Application Load Balancer ----------
 resource "aws_lb" "main" {
   name               = "${var.project_name}-alb"
   internal           = false
@@ -9,7 +8,6 @@ resource "aws_lb" "main" {
   tags = { Name = "${var.project_name}-alb" }
 }
 
-# ---------- Target Group — Frontend ----------
 resource "aws_lb_target_group" "frontend" {
   name        = "${var.project_name}-frontend-tg"
   port        = 80
@@ -27,7 +25,6 @@ resource "aws_lb_target_group" "frontend" {
   }
 }
 
-# ---------- Target Group — Backend ----------
 resource "aws_lb_target_group" "backend" {
   name        = "${var.project_name}-backend-tg"
   port        = 8000
@@ -45,7 +42,6 @@ resource "aws_lb_target_group" "backend" {
   }
 }
 
-# ---------- Listener ----------
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.main.arn
   port              = 80

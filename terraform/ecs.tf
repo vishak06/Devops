@@ -1,4 +1,3 @@
-# ---------- ECS Cluster ----------
 resource "aws_ecs_cluster" "main" {
   name = "${var.project_name}-cluster"
 
@@ -10,7 +9,6 @@ resource "aws_ecs_cluster" "main" {
   tags = { Name = "${var.project_name}-cluster" }
 }
 
-# ---------- IAM — ECS Task Execution Role ----------
 resource "aws_iam_role" "ecs_task_execution" {
   name = "${var.project_name}-ecs-exec-role"
 
@@ -29,7 +27,6 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# ---------- CloudWatch Log Groups ----------
 resource "aws_cloudwatch_log_group" "backend" {
   name              = "/ecs/${var.project_name}/backend"
   retention_in_days = 30
@@ -139,7 +136,6 @@ resource "aws_ecs_service" "backend" {
   depends_on = [aws_lb_listener.http]
 }
 
-# ---------- ECS Service — Frontend ----------
 resource "aws_ecs_service" "frontend" {
   name            = "${var.project_name}-frontend"
   cluster         = aws_ecs_cluster.main.id

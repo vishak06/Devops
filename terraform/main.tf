@@ -7,13 +7,6 @@ terraform {
       version = "~> 5.0"
     }
   }
-
-  # Uncomment for remote state storage
-  # backend "s3" {
-  #   bucket = "your-terraform-state-bucket"
-  #   key    = "finance-tracker/terraform.tfstate"
-  #   region = "us-east-1"
-  # }
 }
 
 provider "aws" {
@@ -27,3 +20,6 @@ provider "aws" {
     }
   }
 }
+
+
+
