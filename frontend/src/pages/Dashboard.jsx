@@ -82,7 +82,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: 'var(--color-text-primary)' }}>Dashboard</h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>Financial overview</p>
+          <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>Your financial overview</p>
         </div>
         <button className="btn-primary" onClick={() => setModalOpen(true)}>
           <Plus size={18} />
